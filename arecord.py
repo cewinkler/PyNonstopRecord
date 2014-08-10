@@ -1,4 +1,5 @@
 import subprocess, sys, os.path
+from datetime import datetime
 
 if len(sys.argv) == 1:
 	print("No filename specified")
@@ -7,9 +8,10 @@ if len(sys.argv) == 1:
 Filename = sys.argv[1]
 Seconds = 0
 Count = 0
+Start = datetime.now()
 
 if sys.argv[2] is not None:
-	Seconds = sys.argv[2]
+	Seconds = int(sys.argv[2])
 
 def main():
 	global Filename, Count, Seconds
@@ -18,13 +20,16 @@ def main():
 	print("Recording to file: " + Filename + "_x.wav")
 	if Seconds > 0:
 		print("Recording for " + str(Seconds) + " seconds.")
+	Start = datetime.now()
 	record()
 	exit()
 
 def record():
-	global Filename
-	global Count
-	returnCode = subprocess.call(get_record_string(), shell=True)
+	global Filename, Count, Start, Seconds
+	duration = 0
+	if Seconds > 0:
+		duration = Seconds - (datetime.now()-Start).seconds
+	returnCode = subprocess.call(get_record_string(duration), shell=True)
 	if returnCode == 0:
 		print("Successfully completed recording")
 		print("Total restarts: " + str(Count))
@@ -34,11 +39,10 @@ def record():
 		Count += 1
 		record()
 
-def get_record_string():
-	global Seconds
+def get_record_string(duration):
 	recstring = "arecord -D plughw:1 --rate 140000"
 	if Seconds > 0:
-		recstring = recstring + " --duration " + str(Seconds)
+		recstring = recstring + " --duration " + str(duration)
 	recstring += recstring + " " + get_filename()
 	return recstring
 
@@ -57,8 +61,7 @@ def validate_filename():
 	return
 
 def get_filename():
-	global Filename
-	global Count
+	global Filename, Count
 
 	return "/home/pi/"+Filename+"_"+str(Count)+".wav"
 
