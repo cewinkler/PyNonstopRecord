@@ -27,6 +27,7 @@ def record():
 	returnCode = subprocess.call(get_record_string(), shell=True)
 	if returnCode == 0:
 		print("Successfully completed recording")
+		print("Total restarts: " + str(Count))
 		return
 	else:
 		print("Recording was interrupted...")
