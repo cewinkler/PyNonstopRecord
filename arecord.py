@@ -42,7 +42,7 @@ def get_record_string():
 	return recstring
 
 def does_file_exist(file):
-	return os.path.isfile("/home/"+file+"_0.wav") 
+	return os.path.isfile("/home/pi/"+file+"_0.wav") 
 	
 def validate_filename():
 	global Filename
@@ -59,7 +59,7 @@ def get_filename():
 	global Filename
 	global Count
 
-	return "/home/"+Filename+"_"+str(Count)+".wav"
+	return "/home/pi/"+Filename+"_"+str(Count)+".wav"
 
 if __name__ == "__main__":
 	main()
