@@ -40,7 +40,7 @@ def record():
 		record()
 
 def get_record_string(duration):
-	recstring = "arecord -D plughw:1 --rate 140000"
+	recstring = "arecord -D plughw:1 --rate 140000 -B 10000000"
 	if Seconds > 0:
 		recstring = recstring + " --duration " + str(duration)
 	recstring += recstring + " " + get_filename()
